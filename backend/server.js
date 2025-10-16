@@ -15,19 +15,21 @@ app.use(express.urlencoded({ extended: true }));
 // Static files for images
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Create upload directories
-const directories = [
-  path.join(__dirname, 'uploads'),
-  path.join(__dirname, 'uploads', 'original'),
-  path.join(__dirname, 'uploads', 'blurred'),
-  path.join(__dirname, 'models')
-];
+// Create upload directories (only in local development, not in serverless)
+if (process.env.VERCEL !== '1') {
+  const directories = [
+    path.join(__dirname, 'uploads'),
+    path.join(__dirname, 'uploads', 'original'),
+    path.join(__dirname, 'uploads', 'blurred'),
+    path.join(__dirname, 'models')
+  ];
 
-directories.forEach(dir => {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-});
+  directories.forEach(dir => {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  });
+}
 
 // Routes
 const authRoutes = require('./routes/auth');
