@@ -1,4 +1,7 @@
 {
+  "buildCommand": "cd frontend && npm install && npm run build",
+  "outputDirectory": "frontend/dist",
+  "installCommand": "npm install && cd backend && npm install && cd ../frontend && npm install",
   "rewrites": [
     {
       "source": "/api/:path*",
@@ -7,10 +10,20 @@
     {
       "source": "/uploads/:path*",
       "destination": "/api/index.js"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.js"
     },
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "/uploads/(.*)",
+      "dest": "/api/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
