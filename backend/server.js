@@ -47,7 +47,13 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Noblesse API is running' });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📁 Uploads directory: ${path.join(__dirname, 'uploads')}`);
-});
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📁 Uploads directory: ${path.join(__dirname, 'uploads')}`);
+  });
+}
+
+// Export for Vercel
+module.exports = app;
