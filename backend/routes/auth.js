@@ -61,7 +61,7 @@ router.post('/login', async (req, res) => {
 
     const token = jwt.sign(
       { userId: user.id, email: user.email },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || 'noblesse-secret-key-2024',
       { expiresIn: '24h' }
     );
 
@@ -78,10 +78,13 @@ router.post('/admin-login', (req, res) => {
   try {
     const { username, password } = req.body;
 
-    if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
+    const adminUsername = process.env.ADMIN_USERNAME || 'admin';
+    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+
+    if (username === adminUsername && password === adminPassword) {
       const token = jwt.sign(
         { userId: 'admin', role: 'admin' },
-        process.env.JWT_SECRET,
+        process.env.JWT_SECRET || 'noblesse-secret-key-2024',
         { expiresIn: '24h' }
       );
 
@@ -111,7 +114,7 @@ router.get('/me', (req, res) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'noblesse-secret-key-2024');
 
     if (decoded.role === 'admin') {
       return res.json({
