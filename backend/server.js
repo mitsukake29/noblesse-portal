@@ -47,13 +47,13 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Noblesse API is running' });
 });
 
-// For local development
-if (process.env.NODE_ENV !== 'production') {
+// Start server for local development (only if not imported as a module)
+if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
     console.log(`📁 Uploads directory: ${path.join(__dirname, 'uploads')}`);
   });
 }
 
-// Export for Vercel
+// Export for Vercel and other imports
 module.exports = app;
